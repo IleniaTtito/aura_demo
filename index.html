@@ -4,410 +4,741 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>aura</title>
+<meta name="description" content="aura: convierte tus comentarios en tu próximo vídeo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--v:#5B3FE0;--v2:#4128B8;--lila:#EAE6FB;--chip:#E9E5FB;--bg:#F5F4FA;--ink:#1A1726;--mut:#6B6680;--mut2:#4F4A63;--line:#E3E1EC;--line2:#D8D3EC;--soft:#DCD8EA}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif}
-a{color:var(--v);text-decoration:none}
-button{font:inherit;cursor:pointer;color:inherit}
-[data-view]{display:none;min-height:100vh}
-[data-view].on{display:flex;flex-direction:column}
-.wrap{width:100%;max-width:1180px;margin:0 auto;padding:32px}
-.top{display:flex;flex-wrap:wrap;align-items:center;gap:20px;padding:14px 32px;background:#fff;border-bottom:1px solid var(--line)}
-.logo{font-size:28px;font-weight:500;letter-spacing:-1px;color:var(--v)}
-.qbox{flex:1 1 280px;max-width:560px;display:flex;align-items:center;gap:8px;height:44px;padding:0 4px 0 20px;border:1px solid var(--line);border-radius:999px;background:var(--bg);font-size:15px}
-.qbox span{flex:1}
-.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;border-radius:999px;border:0;background:var(--v);color:#fff;font-weight:500;font-size:15px}
-.btn:hover{background:var(--v2);color:#fff}
-.btn.sm{height:36px;padding:0 16px;font-size:14px}
-.ghost{height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line2);background:#fff;font-size:14px}
-.avatar{margin-left:auto;width:36px;height:36px;border-radius:999px;background:var(--chip);color:var(--v2);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:500}
-.card{background:#fff;border-radius:24px;padding:28px}
-.h2{margin:0;font-size:20px;font-weight:700}
-.mut{color:var(--mut)}
-.kick{font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--v)}
-.chip{display:inline-block;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;background:var(--lila);color:var(--v2)}
-.bar3{height:10px;border-radius:999px;display:flex;overflow:hidden}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.row{display:flex;flex-wrap:wrap;gap:24px}
-/* inicio */
-.nav{display:flex;justify-content:flex-end;align-items:center;gap:24px;padding:20px 32px;font-size:15px}
-.nav .out{padding:10px 18px;border:1px solid var(--line2);border-radius:999px;background:#fff;font-weight:500}
-.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 80px;text-align:center}
-.hero h1{margin:0;font-size:96px;font-weight:500;letter-spacing:-3px;color:var(--v);line-height:1}
-.seg{display:flex;gap:6px;margin:28px 0 14px}
-.seg button{height:44px;padding:0 18px;border-radius:999px;border:0;background:transparent;color:var(--mut);font-size:15px}
-.seg button.on{background:var(--chip);color:var(--v2);font-weight:500}
-.search{width:100%;max-width:640px;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 24px}
-.search input{flex:1;min-width:0;border:0;outline:none;font:inherit;font-size:18px;height:44px;background:transparent;color:var(--ink)}
-.search .btn{height:48px;padding:0 26px;font-size:16px}
-.opts{display:none;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:10px;padding:18px 24px;background:#fff;border:1px solid var(--line);border-radius:16px;font-size:14px;text-align:left}
-.opts.on{display:flex}
-.pills{display:flex;gap:6px;margin-top:8px}
-.pills button{height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:14px;color:var(--mut2)}
-.pills button.on{background:var(--ink);border-color:var(--ink);color:#fff}
-.foot{display:flex;justify-content:center;gap:24px;padding:20px;font-size:13px;color:var(--mut)}
-/* entrar */
-.login{width:100%;max-width:420px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:48px 40px;text-align:center}
-.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:52px;border-radius:999px;border:1px solid var(--line2);background:#fff;font-size:16px;font-weight:500}
-/* analizando */
-.an{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:56px;align-items:start;max-width:1120px;width:100%;margin:0 auto;padding:56px 32px}
-.an h1{grid-column:1/-1;margin:0;font-size:40px;font-weight:500;letter-spacing:-1px}
-.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.step,.fc{display:flex;justify-content:space-between;align-items:center;gap:16px;border-radius:14px;border:1.5px solid transparent}
-.step{padding:16px 20px;font-size:16px}
-.fc{padding:14px 18px}
-.done,.ok{background:#fff}
-.now{background:#fff;border-color:var(--v);font-weight:500}
-.next,.wait{border:1.5px dashed var(--line2);color:#8A84A0}
-.dot{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;font-size:12px;color:#fff;margin-right:12px;vertical-align:middle}
-.done .dot{background:var(--v)}
-.now .dot{border:2.5px solid var(--soft);border-top-color:var(--v)}
-.next .dot{border:2px solid var(--soft)}
-.tag{flex-shrink:0;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;background:var(--chip);color:var(--v2)}
-.wait .tag{background:none;color:#8A84A0}
-/* reporte */
-.stats{display:flex;gap:28px;margin-top:14px}
-.stats b{display:block;font-size:22px}
-.stats span{font-size:13px;color:var(--mut)}
-.plan{background:var(--lila);border-radius:28px;padding:28px 32px;margin:28px 0}
-.plan ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,.8fr);gap:12px}
-.task{display:flex;flex-direction:column;width:100%;height:100%;text-align:left;padding:18px 20px;border-radius:18px;border:0;background:#fff}
-.task.d{opacity:.55;text-decoration:line-through}
-.task .t{display:block;margin-top:8px;font-size:18px;font-weight:500;line-height:1.3;flex:1}
-.box{width:22px;height:22px;border-radius:7px;border:1.5px solid #B8B1D6;display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
-.task.d .box{background:var(--v);border-color:var(--v)}
-.extra{display:flex;flex-direction:column;padding:18px 20px;border-radius:18px;border:1.5px dashed #B8B1D6}
-.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px}
-.mini>div{background:var(--bg);border-radius:16px;padding:16px}
-.mini p{margin:0}
-.bars{display:flex;align-items:flex-end;gap:3px;height:80px}
-.bars div{flex:1;border-radius:4px 4px 2px 2px;background:var(--soft)}
-.bars .hi{background:var(--v)}
-/* perfil */
-.carta{position:relative;overflow:hidden;background:var(--ink);color:#fff;border-radius:32px;padding:44px 48px;min-height:280px}
-.ring{position:absolute;border-radius:999px}
-.sticker{display:inline-block;font-size:18px;font-weight:700;padding:10px 18px;border-radius:14px}
-.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:18px}
-.tiles button{padding:18px 10px;border-radius:20px;border:2px solid transparent;background:var(--bg);text-align:center}
-.tiles button.on{background:var(--v);color:#fff}
-.tiles svg{stroke:var(--v)}
-.tiles button.on svg{stroke:#fff}
-.vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:center;margin-top:16px;padding:22px 26px;border-radius:22px;background:var(--lila)}
-.ini{flex-shrink:0;width:56px;height:56px;border-radius:999px;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
-.badges{display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
-.badges>div{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;font-size:12px;color:var(--mut)}
-.badge{border-radius:999px;display:inline-flex;align-items:center;justify-content:center}
-/* planes */
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left}
-.pc{display:flex;flex-direction:column;background:#fff;border-radius:24px;padding:28px;border:1px solid var(--line)}
-.pc.f{border:2px solid var(--v)}
-.pc button{height:48px;border-radius:999px;font-size:15px;font-weight:500;border:1px solid var(--line2);background:#fff}
-.pc.f button{background:var(--v);border-color:var(--v);color:#fff}
-.pc button.d{background:var(--chip);border-color:var(--chip);color:var(--v2)}
-.demo{font-size:12px;color:var(--mut);text-align:center;padding:0 20px 16px}
-@media (max-width:900px){
- .hero h1{font-size:64px}.grid2,.an,.mini,.plans{grid-template-columns:1fr}.plan ul{grid-template-columns:1fr 1fr}.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.an>p:nth-of-type(2){margin-top:28px}.carta h1{font-size:64px!important}
-}
+html,body{margin:0;background:#F5F4FA}
+input::placeholder{color:#7C7690}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #5B3FE0;outline-offset:2px}
 </style>
 </head>
 <body>
+<div id="app"></div>
+<template id="tpl">
+<div style="min-height: 820px; background: #F5F4FA; font-family: 'DM Sans', sans-serif; color: #1A1726">
 
-<!-- INICIO -->
-<section data-view="inicio">
-  <nav class="nav"><a href="#planes" style="color:var(--mut2)">Planes</a><a href="#entrar" class="out" id="navEntrar">Entrar</a></nav>
-  <main class="hero">
-    <h1>aura</h1>
-    <p style="margin:14px 0 0;font-size:18px;color:var(--mut2)">Tu próximo video, según tu gente.</p>
-    <div class="seg" role="radiogroup" aria-label="Red social">
-      <button type="button" role="radio" aria-checked="true" class="on" data-plat>TikTok</button>
-      <button type="button" role="radio" aria-checked="false" data-plat>Instagram</button>
-    </div>
-    <form class="search" id="searchForm">
-      <label for="q" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Usuario o link</label>
-      <input id="q" value="@quieromak1s" placeholder="@usuario o link" autocomplete="off">
-      <button class="btn" type="submit">Analizar</button>
-    </form>
-    <div style="display:flex;gap:16px;align-items:center;margin-top:14px;font-size:14px;color:var(--mut)">
-      <span id="optSummary">5 videos · 30 días · detectar tipo</span>
-      <button type="button" id="optToggle" aria-expanded="false" style="border:0;background:none;color:var(--v);padding:10px 4px;font-size:14px">Opciones</button>
-    </div>
-    <div class="opts" id="opts">
-      <div><span class="mut">Videos</span><div class="pills" data-group="v"><button type="button" data-val="3">3</button><button type="button" data-val="5" class="on">5</button><button type="button" data-val="10">10</button></div></div>
-      <div><span class="mut">Periodo</span><div class="pills" data-group="d"><button type="button" data-val="7">7 días</button><button type="button" data-val="30" class="on">30 días</button><button type="button" data-val="90">90 días</button></div></div>
-      <div><span class="mut">Tipo</span><div class="pills" data-group="t"><button type="button" data-val="detectar tipo" class="on">Detectar</button><button type="button" data-val="opinión">Opinión</button><button type="button" data-val="lifestyle">Lifestyle</button></div></div>
-    </div>
-    <a href="#reporte" style="margin-top:40px;font-size:15px;padding:10px 4px">Ver un ejemplo →</a>
-  </main>
-  <p class="demo">Demo · el reporte usa el análisis real de @quieromak1s (15/11/2026)</p>
-</section>
+  <sc-if value="{{is.inicio}}" hint-placeholder-val="{{ true }}">
+    <div style="min-height: 820px; display: flex; flex-direction: column">
+      <nav style="display: flex; justify-content: flex-end; align-items: center; gap: 24px; padding: 20px 32px; font-size: 15px">
+        <sc-if value="{{loggedOut}}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{toLogin}}" style="height: 44px; padding: 0 18px; border: 1px solid #D8D3EC; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 15px; font-weight: 500; color: #5B3FE0; cursor: pointer">Login</button>
+        </sc-if>
+      </nav>
 
-<!-- ENTRAR -->
-<section data-view="entrar">
-  <nav class="nav" style="justify-content:space-between"><a href="#inicio" class="logo">aura</a></nav>
-  <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px 20px 96px">
-    <div class="login">
-      <h1 style="margin:0;font-size:32px;font-weight:500;letter-spacing:-.5px">Entra para analizar</h1>
-      <p style="margin:12px 0 32px;font-size:16px" class="mut">Tu búsqueda te espera.</p>
-      <button type="button" class="gbtn" id="googleBtn">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6H1.3a12 12 0 0 0 0 10.8l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/></svg>
-        Continuar con Google
-      </button>
-      <p style="margin:16px 0 0;font-size:13px" class="mut">Solo para guardar tus análisis.</p>
-      <p style="margin:6px 0 0;font-size:12px" class="mut">Demo: no se conecta a tu cuenta real.</p>
-    </div>
-  </main>
-</section>
+      <main style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 20px 72px">
+        <h1 style="margin: 0; font-size: 96px; font-weight: 500; letter-spacing: -3px; color: #5B3FE0; line-height: 1">aura</h1>
+        <p style="margin: 14px 0 32px; font-size: 18px; color: #4F4A63; text-align: center">Convierte tus comentarios en tu próximo vídeo.</p>
 
-<!-- ANALIZANDO -->
-<section data-view="analizando">
-  <header class="top"><a href="#inicio" class="logo">aura</a><div class="qbox"><span class="qname">@quieromak1s</span></div><span class="avatar" aria-label="Tu cuenta">IT</span></header>
-  <main class="an">
-    <h1 id="anTitle" aria-live="polite">Leyendo a @quieromak1s…</h1>
-    <p style="margin:8px 0 24px;font-size:16px" class="mut" id="anSub">Unos minutos.</p>
-    <p style="margin:8px 0 24px;font-size:16px" class="mut">Lo más votado hasta ahora</p>
-    <section aria-label="Avance">
-      <ol class="list" id="steps"></ol>
-      <a href="#reporte" class="btn" id="goReport" style="display:none;height:52px;margin-top:28px;padding:0 28px;font-size:16px">Ver tu reporte →</a>
-    </section>
-    <section aria-label="Comentarios más votados"><ul class="list" id="feed"></ul></section>
-  </main>
-</section>
-
-<!-- REPORTE -->
-<section data-view="reporte">
-  <header class="top"><a href="#inicio" class="logo">aura</a><div class="qbox"><span>@quieromak1s</span><a href="#inicio" class="btn sm">Analizar</a></div><span class="avatar" aria-label="Tu cuenta">IT</span></header>
-  <div class="wrap">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px">
-      <div>
-        <h1 style="margin:0;font-size:44px;font-weight:700;letter-spacing:-1.5px;line-height:1">@quieromak1s</h1>
-        <div class="stats"><p style="margin:0"><b>231</b><span>comentarios leídos</span></p><p style="margin:0"><b>5</b><span>videos top</span></p><p style="margin:0"><b>30 días</b><span>periodo</span></p></div>
-      </div>
-      <div style="display:flex;gap:8px"><button type="button" class="ghost" id="shareBtn">Compartir</button><a href="#perfil" class="ghost" style="display:inline-flex;align-items:center;color:var(--ink)">Mi perfil</a></div>
-    </div>
-
-    <section class="plan" aria-labelledby="planT">
-      <h2 id="planT" style="margin:0 0 16px;font-size:22px;font-weight:700">Tu plan para esta semana</h2>
-      <ul>
-        <li><button type="button" class="task" aria-pressed="false"><span style="display:flex;justify-content:space-between;align-items:center"><span class="kick">GRABA</span><span class="box"></span></span><span class="t">Tutorial de disfraz DIY barato</span><span class="mut" style="margin-top:12px;font-size:13px">207 votos</span></button></li>
-        <li><button type="button" class="task" aria-pressed="false"><span style="display:flex;justify-content:space-between;align-items:center"><span class="kick">RESPONDE</span><span class="box"></span></span><span class="t">¿ULima o UPC? y dudas de titulación</span><span class="mut" style="margin-top:12px;font-size:13px">78 votos</span></button></li>
-        <li><button type="button" class="task" aria-pressed="false"><span style="display:flex;justify-content:space-between;align-items:center"><span class="kick">AJUSTA</span><span class="box"></span></span><span class="t">Haz videos de 30 a 60 s</span><span class="mut" style="margin-top:12px;font-size:13px">2,8× tus vistas</span></button></li>
-        <li class="extra"><span class="kick" style="color:var(--v2)">TAMBIÉN PIDEN</span>
-          <span style="margin-top:10px;font-size:15px;line-height:1.3">Probar el ácido que les recomendó su dermatólogo<span class="mut" style="display:block;font-size:13px">196 votos</span></span>
-          <span style="margin-top:10px;font-size:15px;line-height:1.3">Vlog de tu titulación<span class="mut" style="display:block;font-size:13px">73 votos</span></span>
-        </li>
-      </ul>
-    </section>
-
-    <div class="row" style="align-items:stretch;margin-bottom:24px">
-      <section class="card" style="flex:999 1 560px;min-width:0;padding:32px" aria-labelledby="perfT">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><h2 class="h2" id="perfT">Tu perfil</h2><a href="#perfil" class="btn sm">Conoce tu perfil →</a></div>
-        <div class="row" style="gap:28px">
-          <div style="flex:1 1 260px">
-            <a href="#perfil" style="display:block;font-size:44px;font-weight:700;letter-spacing:-1.2px;color:var(--v);line-height:1">Lifestyle</a>
-            <div style="display:flex;gap:6px;margin-top:12px"><a href="#perfil" class="chip">Micro</a><a href="#perfil" class="chip">Infotainer</a><a href="#perfil" class="chip" style="background:none;color:var(--mut)">¿Qué significa?</a></div>
-            <p style="margin:14px 0 0;font-size:16px;color:var(--mut2)">Te celebran los logros y te llenan de consejos.</p>
-          </div>
-          <div style="flex:1 1 240px;display:flex;flex-direction:column;gap:20px">
-            <div><p style="margin:0 0 8px;font-size:14px;font-weight:700">Cómo te ven</p>
-              <div class="bar3"><div style="width:96%;background:var(--v)"></div><div style="width:4%;background:var(--soft)"></div></div>
-              <p style="margin:8px 0 0;font-size:13px" class="mut"><b style="color:var(--v)">96% a favor</b> · 4% neutral · <b style="color:var(--ink)">0% en contra</b></p></div>
-            <div><p style="margin:0 0 8px;font-size:14px;font-weight:700">Tu escala</p>
-              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px"><div style="height:8px;border-radius:999px;background:var(--v)"></div><div style="height:8px;border-radius:999px;background:linear-gradient(90deg,var(--v) 11%,var(--soft) 11%)"></div><div style="height:8px;border-radius:999px;background:var(--soft)"></div><div style="height:8px;border-radius:999px;background:var(--soft)"></div></div>
-              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px;font-size:12px" class="mut"><span>Nano</span><span style="color:var(--v2);font-weight:700">Micro</span><span>Macro</span><span>Mega</span></div>
-              <p style="margin:8px 0 0;font-size:13px" class="mut">20.3k seguidores · te faltan <b style="color:var(--ink)">79.7k</b> para Macro</p></div>
+        <div role="search" style="width: 100%; max-width: 640px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #E3E1EC; border-radius: 999px; padding: 8px 8px 8px 24px">
+            <label for="q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Tu usuario de TikTok</label>
+            <input id="q" value="{{query}}" onChange="{{setQuery}}" onKeyDown="{{onKey}}" enterkeyhint="go" placeholder="Escribe tu usuario de TikTok" autocomplete="off" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 18px; color: #1A1726; background: transparent; height: 44px">
+            <button type="button" onClick="{{analyze}}" style="height: 48px; padding: 0 26px; border: 0; border-radius: 999px; background: #5B3FE0; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 500; cursor: pointer; white-space: nowrap">Ver ideas</button>
           </div>
         </div>
-        <div class="mini">
-          <div><p style="font-size:14px;font-weight:700;margin-bottom:8px">Tu gente</p><p style="font-size:15px;line-height:1.7">Te da consejos<br>Pregunta por tu carrera<br>Hace trueques</p></div>
-          <div><p style="font-size:14px;font-weight:700;margin-bottom:8px">Tus fans top</p><p style="font-size:15px" class="mut">Próximamente</p><p style="font-size:13px;margin-top:6px" class="mut">Quién vuelve a comentarte</p></div>
-          <div><p style="font-size:14px;font-weight:700;margin-bottom:8px">Críticas</p><p style="font-size:15px;line-height:1.5">Comentan cómo hablas a cámara</p><p style="font-size:13px;margin-top:6px" class="mut">2 comentarios · 0 votos: poco eco</p></div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; width: 100%; max-width: 640px; text-align: left">
+          <div style="flex: 1 1 190px; min-width: 0">
+            <label for="f-goal" style="display: block; margin: 0 0 6px 16px; font-size: 13px; font-weight: 500; color: #4F4A63">Enfoque</label>
+            <div style="position: relative">
+              <select id="f-goal" value="{{goal}}" onChange="{{setGoal}}" style="width: 100%; height: 48px; padding: 0 40px 0 16px; border: 1px solid #E3E1EC; border-radius: 16px; background: #FFFFFF; font: inherit; font-size: 15px; color: #1A1726; appearance: none; -webkit-appearance: none; cursor: pointer; box-sizing: border-box">
+                <option value="contenido">Contenido</option>
+                <option value="comunidad">Comunidad</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6680" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 16px; top: 16px; pointer-events: none"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+          </div>
+          <div style="flex: 1 1 190px; min-width: 0">
+            <label for="f-videos" style="display: block; margin: 0 0 6px 16px; font-size: 13px; font-weight: 500; color: #4F4A63">Analizar</label>
+            <div style="position: relative">
+              <select id="f-videos" value="{{vStr}}" onChange="{{setV}}" style="width: 100%; height: 48px; padding: 0 40px 0 16px; border: 1px solid #E3E1EC; border-radius: 16px; background: #FFFFFF; font: inherit; font-size: 15px; color: #1A1726; appearance: none; -webkit-appearance: none; cursor: pointer; box-sizing: border-box">
+                <option value="3">Rápido (3 vídeos)</option>
+                <option value="5">Normal (5 vídeos)</option>
+                <option value="10">A fondo (10 vídeos)</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6680" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 16px; top: 16px; pointer-events: none"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+          </div>
+          <div style="flex: 1 1 190px; min-width: 0">
+            <label for="f-periodo" style="display: block; margin: 0 0 6px 16px; font-size: 13px; font-weight: 500; color: #4F4A63">De</label>
+            <div style="position: relative">
+              <select id="f-periodo" value="{{dStr}}" onChange="{{setD}}" style="width: 100%; height: 48px; padding: 0 40px 0 16px; border: 1px solid #E3E1EC; border-radius: 16px; background: #FFFFFF; font: inherit; font-size: 15px; color: #1A1726; appearance: none; -webkit-appearance: none; cursor: pointer; box-sizing: border-box">
+                <option value="7">La última semana</option>
+                <option value="30">El último mes</option>
+                <option value="90">Los últimos 3 meses</option>
+              </select>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6680" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 16px; top: 16px; pointer-events: none"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+          </div>
         </div>
-      </section>
-      <section class="card" style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column" aria-labelledby="diaT">
-        <h2 class="h2" id="diaT">Publica los</h2>
-        <p style="margin:6px 0 0;font-size:36px;font-weight:700;letter-spacing:-1px;color:var(--v)">jueves</p>
-        <p style="margin:2px 0 0;font-size:13px" class="mut">3,6× tus vistas normales</p>
-        <div id="days" style="flex:1;min-height:140px;margin-top:20px;display:flex;align-items:flex-end;gap:8px"></div>
-      </section>
-    </div>
+      </main>
 
-    <div class="grid2">
-      <section class="card" aria-labelledby="opoT"><h2 class="h2" id="opoT" style="margin-bottom:12px">Oportunidades</h2>
-        <div style="padding-top:14px;border-top:1px solid #EEECF4"><p style="margin:0;font-size:16px;font-weight:500">Te preguntan qué universidad elegir</p><p style="margin:4px 0 0;font-size:14px;color:var(--v2)">Contenido útil que atrae seguidores nuevos</p></div>
-        <div style="padding-top:14px;margin-top:14px;border-top:1px solid #EEECF4"><p style="margin:0;font-size:16px;font-weight:500">Tu video de Burger King se volvió un mercado de trueques</p><p style="margin:4px 0 0;font-size:14px;color:var(--v2)">Marcas de coleccionables podrían auspiciarte</p></div>
-      </section>
-      <section class="card" aria-labelledby="funT"><h2 class="h2" id="funT">Lo que más funciona</h2>
-        <p style="margin:4px 0 14px;font-size:14px" class="mut">En tus últimos 30 videos</p>
-        <p style="margin:0 0 6px;font-size:18px;font-weight:500">Disfraces y DIY: <b style="color:var(--v)">hasta 100× tus vistas</b></p>
-        <p style="margin:0 0 16px;font-size:14px" class="mut">Tus últimos videos bajaron 38%: vuelve a lo que pega.</p>
-        <div class="bars" id="channel"></div>
-      </section>
+      <footer style="display: flex; justify-content: center; gap: 24px; padding: 20px; font-size: 13px; color: #6B6680">
+        <a href="#" style="color: #6B6680; text-decoration: none">Privacidad</a>
+        <a href="#" style="color: #6B6680; text-decoration: none">Condiciones</a>
+      </footer>
     </div>
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);font-size:15px">
-      <div id="fb" style="display:flex;align-items:center;gap:10px"><span>¿Te sirvió?</span><button type="button" class="ghost" data-fb>Sí</button><button type="button" class="ghost" data-fb>No</button></div>
-      <p style="margin:0;font-size:13px" class="mut">Muestra de comentarios públicos · análisis del 15/11/2026</p>
-    </div>
-  </div>
-</section>
+  </sc-if>
 
-<!-- PERFIL -->
-<section data-view="perfil">
-  <header class="top"><a href="#inicio" class="logo">aura</a><a href="#reporte" style="margin-left:auto;font-size:15px;padding:10px 4px">← Volver al reporte</a></header>
-  <div class="wrap" style="display:flex;flex-direction:column;gap:24px">
-    <section class="carta" aria-label="Tu carta de creador">
-      <div class="ring" aria-hidden="true" style="right:-80px;top:-90px;width:460px;height:460px;border:2px solid rgba(169,155,255,.18)"></div>
-      <div class="ring" aria-hidden="true" style="right:-10px;top:-20px;width:320px;height:320px;border:2px solid rgba(169,155,255,.28)"></div>
-      <div class="ring" aria-hidden="true" style="right:60px;top:50px;width:180px;height:180px;background:rgba(91,63,224,.55)"></div>
-      <div style="position:relative">
-        <p style="margin:0;font-size:16px;color:#C9BEFF">@quieromak1s</p>
-        <h1 style="margin:8px 0 0;font-size:96px;font-weight:700;letter-spacing:-4px;line-height:.9">Lifestyle</h1>
-        <div style="display:flex;gap:10px;margin-top:22px"><span class="sticker" style="transform:rotate(-3deg);background:#A99BFF;color:var(--ink)">Micro</span><span class="sticker" style="transform:rotate(2deg);background:#fff;color:var(--ink)">Infotainer</span></div>
-        <p style="margin:22px 0 0;font-size:17px;color:#DAD5EE">Te celebran los logros y te llenan de consejos.</p>
-      </div>
-    </section>
-    <div class="grid2">
-      <section class="card" aria-labelledby="nivT">
-        <p class="kick" style="margin:0">TU NIVEL</p>
-        <h2 id="nivT" style="margin:4px 0 22px;font-size:26px;font-weight:700">Nivel 2 de 4</h2>
-        <div class="badges" id="badges"></div>
-        <div style="margin-top:22px;padding:16px 18px;border-radius:18px;background:var(--bg)">
-          <div style="display:flex;justify-content:space-between;font-size:14px"><b>20.3k / 100k</b><span class="mut">próximo: Macro</span></div>
-          <div style="margin-top:10px;height:12px;border-radius:999px;background:var(--line);overflow:hidden"><div style="width:20%;height:100%;background:var(--v);border-radius:999px"></div></div>
+  <sc-if value="{{is.entrar}}" hint-placeholder-val="{{ false }}">
+    <div style="min-height: 820px; display: flex; flex-direction: column">
+      <nav style="display: flex; align-items: center; padding: 20px 32px">
+        <button type="button" onClick="{{toInicio}}" style="border: 0; background: transparent; padding: 4px 0; font: inherit; font-size: 28px; font-weight: 500; letter-spacing: -1px; color: #5B3FE0; cursor: pointer">aura</button>
+      </nav>
+      <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 20px 96px">
+        <div style="width: 100%; max-width: 420px; background: #FFFFFF; border: 1px solid #E3E1EC; border-radius: 24px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; box-sizing: border-box">
+          <h1 style="margin: 0; font-size: 32px; font-weight: 500; letter-spacing: -0.5px">Entra para analizar</h1>
+          <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.45; color: #6B6680">Con tu cuenta llevamos tus análisis del mes y los guardamos.</p>
+          <button type="button" onClick="{{login}}" style="display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; height: 52px; border-radius: 999px; border: 1px solid #D8D3EC; background: #FFFFFF; color: #1A1726; font: inherit; font-size: 16px; font-weight: 500; cursor: pointer; box-sizing: border-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6H1.3a12 12 0 0 0 0 10.8l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.9 3.6-4.9 6.7-4.9z"/></svg>
+            Continuar con Google
+          </button>
+          <p style="margin: 16px 0 0; font-size: 13px; color: #6B6680">Demo: no se conecta a tu cuenta real.</p>
         </div>
-      </section>
-      <section class="card" aria-labelledby="estT">
-        <p class="kick" style="margin:0">TU ESTILO</p>
-        <h2 id="estT" style="margin:4px 0 10px;font-size:26px;font-weight:700">¿Aprenden o se divierten?</h2>
-        <svg viewBox="0 0 300 170" style="width:100%;max-width:380px;display:block;margin:0 auto" role="img" aria-label="Medidor de estilo: Infotainer, entre Informer y Entertainer">
-          <path d="M30 150 A120 120 0 0 1 270 150" fill="none" stroke="#EAE6FB" stroke-width="26" stroke-linecap="round"/>
-          <path d="M30 150 A120 120 0 0 1 157 30.2" fill="none" stroke="#5B3FE0" stroke-width="26" stroke-linecap="round"/>
-          <circle cx="157" cy="30.2" r="20" fill="#1A1726" stroke="#fff" stroke-width="5"/>
-          <text x="157" y="35.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#fff">Tú</text>
-          <text x="150" y="140" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="22" font-weight="700" fill="#5B3FE0">Infotainer</text>
-        </svg>
-        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:14px"><span><b>Informer</b><span class="mut" style="display:block;font-size:13px">aprenden</span></span><span style="text-align:right"><b>Entertainer</b><span class="mut" style="display:block;font-size:13px">se divierten</span></span></div>
-      </section>
+      </main>
+      <footer style="display: flex; justify-content: center; gap: 24px; padding: 20px; font-size: 13px; color: #6B6680">
+        <a href="#" style="color: #6B6680; text-decoration: none">Privacidad</a>
+        <a href="#" style="color: #6B6680; text-decoration: none">Condiciones</a>
+      </footer>
     </div>
-    <section class="card" aria-labelledby="nicT">
-      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px"><div><p class="kick" style="margin:0">TU NICHO</p><h2 id="nicT" style="margin:4px 0 0;font-size:26px;font-weight:700">¿Con quién juegas?</h2></div><p style="margin:0;font-size:14px" class="mut">Toca un nicho</p></div>
-      <div class="tiles" id="tiles"></div>
-      <div class="vs">
-        <div style="display:flex;align-items:center;gap:14px"><span class="ini" style="background:var(--v)" id="peIn"></span><div><p style="margin:0;font-size:12px;font-weight:700;color:var(--v2)">PERÚ</p><p style="margin:2px 0 0;font-size:20px;font-weight:700" id="peName"></p></div></div>
-        <span style="font-size:16px;font-weight:700;color:#fff;padding:10px 14px;border-radius:999px;background:var(--ink)">vs</span>
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:14px;text-align:right"><div><p style="margin:0;font-size:12px;font-weight:700;color:var(--v2)">MUNDO</p><p style="margin:2px 0 0;font-size:20px;font-weight:700" id="wName"></p></div><span class="ini" style="background:var(--ink)" id="wIn"></span></div>
+  </sc-if>
+
+  <sc-if value="{{is.analizando}}" hint-placeholder-val="{{ false }}">
+    <div style="min-height: 820px">
+      <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 16px 24px; background: #FFFFFF; border-bottom: 1px solid #E3E1EC">
+        <button type="button" onClick="{{toInicio}}" style="border: 0; background: transparent; padding: 4px 0; font: inherit; font-size: 28px; font-weight: 500; letter-spacing: -1px; color: #5B3FE0; cursor: pointer">aura</button>
+        <div role="search" style="flex: 1 1 280px; max-width: 560px; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 4px 0 20px; border: 1px solid #E3E1EC; border-radius: 999px; background: #F5F4FA; box-sizing: border-box">
+          <label for="q3" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Analizar otro usuario de TikTok</label>
+          <input id="q3" value="{{topQuery}}" onChange="{{setTopQuery}}" onKeyDown="{{onKey}}" enterkeyhint="search" autocomplete="off" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 15px; color: #1A1726; background: transparent; height: 40px">
+          <button type="button" onClick="{{analyze}}" aria-label="Nuevo análisis" title="Nuevo análisis" style="flex-shrink: 0; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 999px; background: #5B3FE0; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        </div>
+        <div style="margin-left: auto; display: flex; align-items: center">
+          <sc-if value="{{loggedOut}}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{toLogin}}" style="height: 44px; padding: 0 18px; border: 1px solid #D8D3EC; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 15px; font-weight: 500; color: #5B3FE0; cursor: pointer">Login</button>
+          </sc-if>
+        </div>
+      </header>
+
+      <main style="max-width: 608px; margin: 0 auto; padding: 56px 24px; box-sizing: border-box">
+        <h1 style="margin: 0; font-size: 40px; font-weight: 500; letter-spacing: -1px" aria-live="polite">{{an.title}}</h1>
+        <p style="margin: 8px 0 28px; font-size: 16px; color: #6B6680">{{an.subtitle}}</p>
+        <div style="max-width: 560px">
+          <section aria-label="Avance">
+            <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+              <sc-for list="{{an.steps}}" as="s" hint-placeholder-count="3">
+                <li style="{{s.row}}">
+                  <span style="display: flex; align-items: center; gap: 12px"><span style="{{s.dot}}">{{s.mark}}</span>{{s.label}}</span>
+                  <span style="{{s.metaStyle}}">{{s.meta}}</span>
+                </li>
+              </sc-for>
+            </ol>
+          </section>
+        </div>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{is.reporte}}" hint-placeholder-val="{{ false }}">
+    <div>
+      <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 16px 24px; background: #FFFFFF; border-bottom: 1px solid #E3E1EC">
+        <button type="button" onClick="{{toInicio}}" style="border: 0; background: transparent; padding: 4px 0; font: inherit; font-size: 28px; font-weight: 500; letter-spacing: -1px; color: #5B3FE0; cursor: pointer">aura</button>
+        <div role="search" style="flex: 1 1 280px; max-width: 560px; margin-left: auto; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 4px 0 20px; border: 1px solid #E3E1EC; border-radius: 999px; background: #F5F4FA; box-sizing: border-box">
+          <label for="q2" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Analizar otro usuario de TikTok</label>
+          <input id="q2" value="{{topQuery}}" onChange="{{setTopQuery}}" onKeyDown="{{onKey}}" enterkeyhint="search" autocomplete="off" style="flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 15px; color: #1A1726; background: transparent; height: 40px">
+          <button type="button" onClick="{{analyze}}" aria-label="Nuevo análisis" title="Nuevo análisis" style="flex-shrink: 0; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 999px; background: #5B3FE0; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+        </div>
+        <div style="display: flex; align-items: center">
+          <sc-if value="{{loggedOut}}" hint-placeholder-val="{{ true }}">
+            <button type="button" onClick="{{toLogin}}" style="height: 44px; padding: 0 18px; border: 1px solid #D8D3EC; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 15px; font-weight: 500; color: #5B3FE0; cursor: pointer">Login</button>
+          </sc-if>
+        </div>
+      </header>
+
+      <div style="max-width: 1180px; margin: 0 auto; padding: 32px 24px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 20px">
+          <div style="min-width: 0">
+            <h1 style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -1.2px; line-height: 1.05"><button type="button" onClick="{{toPerfil}}" title="Ver tu perfil" style="border: 0; background: transparent; padding: 0; font: inherit; color: inherit; letter-spacing: inherit; cursor: pointer; text-align: left">@quieromak1s</button></h1>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px">
+              <button type="button" onClick="{{toPerfil}}" title="Ver tu perfil" style="font-size: 14px; font-weight: 500; padding: 0 14px; height: 36px; border: 0; border-radius: 999px; background: #EAE6FB; color: #4128B8; font-family: inherit; cursor: pointer">Lifestyle</button>
+              <button type="button" onClick="{{toPerfil}}" title="Ver tu perfil" style="font-size: 14px; font-weight: 500; padding: 0 14px; height: 36px; border: 0; border-radius: 999px; background: #EAE6FB; color: #4128B8; font-family: inherit; cursor: pointer">Micro Influencer</button>
+              <button type="button" onClick="{{toPerfil}}" style="border: 0; background: transparent; font: inherit; font-size: 14px; color: #5B3FE0; cursor: pointer; padding: 12px 6px">Ver tu perfil →</button>
+            </div>
+          </div>
+          <div role="radiogroup" aria-label="Enfoque" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{focus}}" as="f" hint-placeholder-count="2">
+              <button type="button" role="radio" aria-checked="{{f.on}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <section aria-labelledby="mov" style="background: #EAE6FB; border-radius: 28px; padding: 24px 24px 12px">
+          <h2 id="mov" style="margin: 0 0 14px; font-size: 20px; font-weight: 700">{{actionsTitle}}</h2>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+            <sc-for list="{{moves}}" as="m" hint-placeholder-count="3">
+              <li>
+                <button type="button" onClick="{{m.toggle}}" aria-pressed="{{m.doneStr}}" style="{{m.style}}">
+                  <span aria-hidden="true" style="flex-shrink: 0; width: 32px; height: 32px; border-radius: 999px; background: #EAE6FB; color: #4128B8; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">{{m.n}}</span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #5B3FE0">{{m.verb}}</span>
+                    <span style="font-size: 17px; font-weight: 500; line-height: 1.3">{{m.text}}</span>
+                    <span style="font-size: 13px; line-height: 1.4; color: #4F4A63">{{m.why}}</span>
+                  </span>
+                  <span style="{{m.box}}">{{m.check}}</span>
+                </button>
+              </li>
+            </sc-for>
+          </ol>
+          <button type="button" onClick="{{toggleHow}}" aria-expanded="{{howStr}}" aria-controls="como" style="display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 500; color: #4128B8; cursor: pointer; padding: 12px 0">¿De dónde sale esto? <span aria-hidden="true">{{howMark}}</span></button>
+          <sc-if value="{{how}}" hint-placeholder-val="{{ false }}">
+            <p id="como" style="margin: 0 0 12px; padding: 16px 20px; border-radius: 16px; background: #FFFFFF; font-size: 14px; line-height: 1.5; color: #4F4A63">{{howText}}</p>
+          </sc-if>
+        </section>
+
+        <section aria-labelledby="hallazgos" style="background: #FFFFFF; border-radius: 28px; padding: 24px">
+          <h2 id="hallazgos" style="margin: 0 0 14px; font-size: 20px; font-weight: 700">Lo que encontramos</h2>
+          <sc-if value="{{isContenido}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch">
+              <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #F5F4FA; box-sizing: border-box">
+                <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">TENDENCIA</p>
+                <p style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.6px; line-height: 1.1">−38%</p>
+                <p style="margin: -6px 0 0; font-size: 14px; line-height: 1.4; color: #4F4A63">en tus últimos 5 vídeos, frente a los 5 anteriores</p>
+                <div style="flex: 1; min-height: 72px; display: flex; align-items: flex-end; gap: 4px" role="img" aria-label="Vistas de tus últimos 5 vídeos frente a los 5 anteriores: bajaron 38%">
+                  <sc-for list="{{trend}}" as="v" hint-placeholder-count="10">
+                    <div onMouseEnter="{{v.enter}}" onMouseLeave="{{leave}}" onClick="{{v.enter}}" style="position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; cursor: default">
+                      <sc-if value="{{v.show}}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 6px; padding: 6px 10px; border-radius: 8px; background: #1A1726; color: #FFFFFF; font-size: 12px; font-weight: 500; white-space: nowrap; z-index: 5; pointer-events: none">{{v.tip}}</span></sc-if>
+                      <div style="{{v.bar}}"></div>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: #6B6680"><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: #DCD8EA"></span>5 anteriores</span><span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: #5B3FE0"></span>Últimos 5</span></p>
+              </div>
+              <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #F5F4FA; box-sizing: border-box">
+                <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">QUÉ TE FUNCIONA</p>
+                <div style="display: flex; flex-direction: column; gap: 12px">
+                  <sc-for list="{{themes}}" as="r" hint-placeholder-count="3">
+                    <div onMouseEnter="{{r.enter}}" onMouseLeave="{{leave}}" onClick="{{r.enter}}" style="position: relative; cursor: default">
+                      <sc-if value="{{r.show}}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position: absolute; right: 0; bottom: 100%; margin-bottom: 6px; padding: 6px 10px; border-radius: 8px; background: #1A1726; color: #FFFFFF; font-size: 12px; font-weight: 500; white-space: nowrap; z-index: 5; pointer-events: none">{{r.tip}}</span></sc-if>
+                      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 1.3"><span>{{r.label}}</span><span style="flex-shrink: 0; font-weight: 700; color: #4128B8">{{r.value}}</span></div>
+                      <div style="margin-top: 6px; height: 8px; border-radius: 999px; background: #E3E1EC; overflow: hidden"><div style="{{r.bar}}"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="margin: 0; font-size: 12px; color: #6B6680">% de tus vistas por tema</p>
+              </div>
+              <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #F5F4FA; box-sizing: border-box">
+                <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">CUÁNDO PUBLICAR</p>
+                <p style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.6px; line-height: 1.1">Jueves</p>
+                <p style="margin: -6px 0 0; font-size: 14px; line-height: 1.4; color: #4F4A63">casi 4 veces más vistas que otro día</p>
+                <div style="flex: 1; min-height: 64px; display: flex; align-items: flex-end; gap: 6px" role="img" aria-label="Vistas por día de la semana: el jueves es el más alto">
+                  <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+                    <div onMouseEnter="{{d.enter}}" onMouseLeave="{{leave}}" onClick="{{d.enter}}" style="position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; cursor: default">
+                      <sc-if value="{{d.show}}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 6px; padding: 6px 10px; border-radius: 8px; background: #1A1726; color: #FFFFFF; font-size: 12px; font-weight: 500; white-space: nowrap; z-index: 5; pointer-events: none">{{d.tip}}</span></sc-if>
+                      <div style="{{d.bar}}"></div>
+                      <span style="font-size: 11px; color: #6B6680">{{d.n}}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="margin: 0; font-size: 14px; line-height: 1.4">Duración ideal: <span style="font-weight: 700">de 30 a 60 s</span> <span style="color: #6B6680">(casi 3 veces más vistas)</span></p>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{isComunidad}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch">
+              <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #F5F4FA; box-sizing: border-box">
+                <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">TUS FANS TOP</p>
+                <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+                  <sc-for list="{{fans}}" as="f" hint-placeholder-count="3">
+                    <li style="display: flex; align-items: center; gap: 12px">
+                      <span aria-hidden="true" style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 999px; background: #5B3FE0; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700">{{f.ini}}</span>
+                      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 15px; font-weight: 500">{{f.user}}</span><span style="font-size: 12px; color: #6B6680">{{f.follows}}</span></span>
+                      <span style="flex-shrink: 0; font-size: 13px; color: #4F4A63">{{f.count}}</span>
+                    </li>
+                  </sc-for>
+                </ul>
+              </div>
+              <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #F5F4FA; box-sizing: border-box">
+                <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">TONO</p>
+                <p style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.6px; line-height: 1.1">96% a favor</p>
+                <div style="position: relative"><sc-if value="{{tonoTipShow}}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position: absolute; left: 0; bottom: 100%; margin-bottom: 6px; padding: 6px 10px; border-radius: 8px; background: #1A1726; color: #FFFFFF; font-size: 12px; font-weight: 500; white-space: nowrap; z-index: 5; pointer-events: none">{{tonoTip}}</span></sc-if><div style="height: 10px; border-radius: 999px; display: flex; overflow: hidden" role="img" aria-label="96% a favor (222 comentarios), 4% neutral (9 comentarios), 0% en contra"><div onMouseEnter="{{tonoA}}" onMouseLeave="{{leave}}" onClick="{{tonoA}}" style="width: 96%; background: #5B3FE0; cursor: default"></div><div onMouseEnter="{{tonoN}}" onMouseLeave="{{leave}}" onClick="{{tonoN}}" style="width: 4%; background: #DCD8EA; cursor: default"></div></div></div>
+                <p style="margin: 0; font-size: 13px; color: #4F4A63">4% neutral · 0% en contra</p>
+                <p style="margin: 0; font-size: 14px; line-height: 1.4">Te sugieren: <span style="font-weight: 700">hablar más lento</span> <span style="color: #6B6680">(2 comentarios)</span></p>
+              </div>
+              <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 20px; background: #F5F4FA; box-sizing: border-box">
+                <p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">CÓMO TE COMENTAN</p>
+                <div style="display: flex; flex-direction: column; gap: 12px">
+                  <sc-for list="{{topics}}" as="r" hint-placeholder-count="3">
+                    <div onMouseEnter="{{r.enter}}" onMouseLeave="{{leave}}" onClick="{{r.enter}}" style="position: relative; cursor: default">
+                      <sc-if value="{{r.show}}" hint-placeholder-val="{{ false }}"><span role="tooltip" style="position: absolute; right: 0; bottom: 100%; margin-bottom: 6px; padding: 6px 10px; border-radius: 8px; background: #1A1726; color: #FFFFFF; font-size: 12px; font-weight: 500; white-space: nowrap; z-index: 5; pointer-events: none">{{r.tip}}</span></sc-if>
+                      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 1.3"><span>{{r.label}}</span><span style="flex-shrink: 0; font-weight: 700; color: #4128B8">{{r.value}}</span></div>
+                      <div style="margin-top: 6px; height: 8px; border-radius: 999px; background: #E3E1EC; overflow: hidden"><div style="{{r.bar}}"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </section>
+
+        <section aria-labelledby="sirvio" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 16px; padding: 12px 0">
+          <h2 id="sirvio" style="margin: 0; font-size: 18px; font-weight: 500">¿Te sirvió?</h2>
+          <sc-if value="{{voted}}" hint-placeholder-val="{{ false }}">
+            <p style="margin: 0; font-size: 15px; color: #4128B8" aria-live="polite">Gracias, nos ayuda a mejorar.</p>
+          </sc-if>
+          <sc-if value="{{notVoted}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; gap: 8px">
+              <sc-for list="{{votes}}" as="v" hint-placeholder-count="3">
+                <button type="button" onClick="{{v.pick}}" style="height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #D8D3EC; background: #FFFFFF; font: inherit; font-size: 14px; color: #1A1726; cursor: pointer">{{v.label}}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </section>
       </div>
-    </section>
-    <p style="margin:0;font-size:12px" class="mut">Basado en IAB Content Taxonomy 3.0, Campbell y Farrell (2020) y Gross y von Wangenheim (Big Four). Nicho y estilo: lectura preliminar. Creadores citados solo como referencia pública.</p>
-  </div>
-</section>
-
-<!-- PLANES -->
-<section data-view="planes">
-  <nav class="nav" style="justify-content:space-between"><a href="#inicio" class="logo">aura</a><a href="#entrar" class="out" style="padding:10px 18px;border:1px solid var(--line2);border-radius:999px;background:#fff;font-weight:500">Entrar</a></nav>
-  <main style="flex:1;max-width:1040px;width:100%;margin:0 auto;padding:48px 32px 80px;text-align:center">
-    <h1 style="margin:0;font-size:48px;font-weight:500;letter-spacing:-1.5px">Planes</h1>
-    <p style="margin:10px 0 40px;font-size:17px" class="mut">Sin cobro por ahora.</p>
-    <div class="plans">
-      <div class="pc"><p style="margin:0" class="mut">Creador</p><p style="margin:12px 0 0;font-size:48px;font-weight:500;line-height:1">10</p><p style="margin:6px 0 24px" class="mut">análisis al mes</p><p style="margin:0 0 28px;flex:1">Revisa tus videos cada semana.</p><button type="button" data-plan>Lo quiero</button></div>
-      <div class="pc f"><p style="margin:0" class="mut">Pro</p><p style="margin:12px 0 0;font-size:48px;font-weight:500;line-height:1">30</p><p style="margin:6px 0 24px" class="mut">análisis al mes</p><p style="margin:0 0 28px;flex:1">Cada video, y tu competencia.</p><button type="button" data-plan>Lo quiero</button></div>
-      <div class="pc"><p style="margin:0" class="mut">Ilimitado</p><p style="margin:12px 0 0;font-size:48px;font-weight:500;line-height:1">∞</p><p style="margin:6px 0 24px" class="mut">sin tope</p><p style="margin:0 0 28px;flex:1">Para equipos y CMs.</p><button type="button" data-plan>Lo quiero</button></div>
     </div>
-    <p style="margin:28px 0 0;font-size:14px" class="mut">Precio por definir en el piloto.</p>
-  </main>
-</section>
+  </sc-if>
 
+  <sc-if value="{{is.perfil}}" hint-placeholder-val="{{ false }}">
+    <div>
+      <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 16px 24px; background: #FFFFFF; border-bottom: 1px solid #E3E1EC">
+        <button type="button" onClick="{{toInicio}}" style="border: 0; background: transparent; padding: 4px 0; font: inherit; font-size: 28px; font-weight: 500; letter-spacing: -1px; color: #5B3FE0; cursor: pointer">aura</button>
+        <button type="button" onClick="{{toReporte}}" style="margin-left: auto; border: 0; background: transparent; font: inherit; font-size: 15px; color: #5B3FE0; cursor: pointer; padding: 12px 4px">← Regresar</button>
+      </header>
+
+      <div style="max-width: 1180px; margin: 0 auto; padding: 32px 24px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+
+        <section aria-label="Tu carta de creador" style="position: relative; overflow: hidden; background: #1A1726; color: #FFFFFF; border-radius: 32px; padding: 40px 32px; min-height: 280px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center">
+          <div style="position: relative; z-index: 0; flex: 1; display: flex; flex-wrap: wrap-reverse; justify-content: space-between; align-items: center; gap: 20px">
+            <div style="min-width: 0">
+            <h1 style="margin: 0; font-size: clamp(56px, 12vw, 96px); font-weight: 700; letter-spacing: -3px; line-height: 0.9">Lifestyle</h1>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px">
+              <span style="display: inline-block; font-size: 18px; font-weight: 700; padding: 10px 18px; border-radius: 14px; background: #A99BFF; color: #1A1726">Micro Influencer</span>
+              <span style="display: inline-block; font-size: 18px; font-weight: 700; padding: 10px 18px; border-radius: 14px; background: #FFFFFF; color: #1A1726">Infotainer</span>
+            </div>
+            </div>
+            <div style="flex: 0 0 140px; margin-left: auto; display: flex; flex-direction: column; align-items: center; gap: 10px">
+              <div style="position: relative; width: 112px; height: 112px">
+                <div aria-hidden="true" style="position: absolute; z-index: -1; left: 50%; top: 50%; width: 460px; height: 460px; margin: -230px 0 0 -230px; border-radius: 999px; border: 2px solid rgba(169,155,255,0.18); box-sizing: border-box"></div>
+                <div aria-hidden="true" style="position: absolute; z-index: -1; left: 50%; top: 50%; width: 320px; height: 320px; margin: -160px 0 0 -160px; border-radius: 999px; border: 2px solid rgba(169,155,255,0.28); box-sizing: border-box"></div>
+                <span role="img" aria-label="Foto de perfil de @quieromak1s (imagen referencial)" style="width: 112px; height: 112px; border-radius: 999px; overflow: hidden; background: #EAE6FB; box-shadow: 0 0 0 4px #5B3FE0; display: block">
+                  <svg viewBox="0 0 112 112" width="112" height="112" aria-hidden="true" style="display: block"><circle cx="56" cy="44" r="21" fill="#A99BFF"/><path d="M18 112c2-24 18-38 38-38s36 14 38 38z" fill="#A99BFF"/></svg>
+                </span>
+              </div>
+              <span style="font-size: 16px; font-weight: 500; color: #FFFFFF">@quieromak1s</span>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 24px">
+          <section aria-labelledby="nivel-t" style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border-radius: 28px; padding: 28px">
+            <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.6px; color: #5B3FE0">TU NIVEL</p>
+            <h2 id="nivel-t" style="margin: 4px 0 6px; font-size: 26px; font-weight: 700">Micro Influencer</h2>
+            <p style="margin: 0 0 22px; font-size: 14px; color: #4F4A63">Nivel 2/4</p>
+            <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 8px">
+              <sc-for list="{{tiers}}" as="t" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1">
+                  <span style="{{t.badge}}"><svg width="{{t.icon}}" height="{{t.icon}}" viewBox="0 0 24 24" fill="none" stroke="{{t.ink}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.path}}"/></svg></span>
+                  <span style="{{t.label}}">{{t.name}}</span>
+                  <span style="font-size: 12px; color: #6B6680">{{t.range}}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top: 22px; padding: 18px 20px; border-radius: 18px; background: #F5F4FA">
+              <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px">
+                <div><p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">HOY</p><p style="margin: 2px 0 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px">20.3k</p></div>
+                <div style="text-align: right"><p style="margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">META · MACRO</p><p style="margin: 2px 0 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: #4F4A63">100k</p></div>
+              </div>
+              <div style="position: relative; margin-top: 12px; height: 12px; border-radius: 999px; background: #E3E1EC" role="img" aria-label="20.3k de 100k seguidores para llegar a Macro">
+                <div style="width: 20%; height: 100%; border-radius: 999px; background: #5B3FE0"></div>
+                <span aria-hidden="true" style="position: absolute; left: 20%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 999px; background: #FFFFFF; border: 4px solid #5B3FE0; box-sizing: border-box"></span>
+              </div>
+              <p style="margin: 12px 0 0; font-size: 14px; color: #4F4A63">Te faltan <span style="font-weight: 700; color: #5B3FE0">79.7k</span> seguidores</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="estilo-t" style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border-radius: 28px; padding: 28px">
+            <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.6px; color: #5B3FE0">TU ESTILO</p>
+            <h2 id="estilo-t" style="margin: 4px 0 4px; font-size: 26px; font-weight: 700">Infotainer</h2>
+            <p style="margin: 0; font-size: 14px; color: #4F4A63">Tu audiencia aprende y se divierte</p>
+            <div style="margin-top: 12px">
+              <div style="max-width: 340px; margin: 0 auto"><svg viewBox="0 0 320 250" style="width: 100%; display: block" role="img" aria-label="Tus comentarios: 48% aprenden, 39% se divierten, 13% quieren probar"><polygon points="160.0,110.0 186.0,155.0 134.0,155.0" fill="none" stroke="#DCD8EA" stroke-width="1.5"/><polygon points="160.0,80.0 212.0,170.0 108.0,170.0" fill="none" stroke="#DCD8EA" stroke-width="1.5"/><polygon points="160.0,50.0 237.9,185.0 82.1,185.0" fill="none" stroke="#DCD8EA" stroke-width="1.5"/><line x1="160" y1="140" x2="160.0" y2="50.0" stroke="#DCD8EA" stroke-width="1.5"/><line x1="160" y1="140" x2="237.9" y2="185.0" stroke="#DCD8EA" stroke-width="1.5"/><line x1="160" y1="140" x2="82.1" y2="185.0" stroke="#DCD8EA" stroke-width="1.5"/><polygon points="160.0,68.0 210.7,169.2 143.1,149.8" fill="#5B3FE0" fill-opacity="0.25" stroke="#5B3FE0" stroke-width="2.5" stroke-linejoin="round"/><circle cx="160.0" cy="68.0" r="4.5" fill="#5B3FE0"/><circle cx="210.7" cy="169.2" r="4.5" fill="#5B3FE0"/><circle cx="143.1" cy="149.8" r="4.5" fill="#5B3FE0"/><text x="160.0" y="24.0" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" fill="#4F4A63">Aprenden</text><text x="160.0" y="41.0" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="700" fill="#5B3FE0">48%</text><text x="237.9" y="205.0" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" fill="#4F4A63">Se divierten</text><text x="237.9" y="222.0" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="700" fill="#5B3FE0">39%</text><text x="82.1" y="205.0" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" fill="#4F4A63">Quieren probar</text><text x="82.1" y="222.0" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="700" fill="#5B3FE0">13%</text></svg></div>
+            </div>
+          </section>
+        </div>
+
+        <section aria-labelledby="nicho-t" style="background: #FFFFFF; border-radius: 28px; padding: 28px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+            <div style="display: flex; align-items: flex-start; gap: 14px">
+              <span aria-hidden="true" style="flex-shrink: 0; width: 52px; height: 52px; border-radius: 16px; background: #5B3FE0; display: inline-flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{sel.icon}}"/></svg></span>
+              <div>
+                <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.6px; color: #5B3FE0">{{nicheLabel}}</p>
+                <h2 id="nicho-t" style="margin: 2px 0 0; font-size: 26px; font-weight: 700" aria-live="polite">{{sel.name}}</h2>
+                <p aria-hidden="{{backHidden}}" style="{{backLine}}">Tu nicho: Lifestyle · <button type="button" onClick="{{backToOwn}}" tabIndex="{{backTab}}" style="border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 500; color: #5B3FE0; text-decoration: underline; cursor: pointer; padding: 6px 2px">Volver</button></p>
+              </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px">
+              <span style="font-size: 14px; color: #4F4A63; margin-right: 4px">Otros nichos:</span>
+              <sc-for list="{{others}}" as="n" hint-placeholder-count="4">
+                <button type="button" onClick="{{n.pick}}" aria-pressed="{{n.onStr}}" style="{{n.chip}}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"/></svg>
+                  {{n.name}}
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px">
+            <div style="min-width: 0; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 20px; background: #EAE6FB">
+              <span aria-hidden="true" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 999px; background: #5B3FE0; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; box-shadow: 0 0 0 3px #FFFFFF">{{sel.peIn}}</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; min-height: 60px">
+                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">PERÚ</span>
+                <span style="font-size: 18px; font-weight: 700; line-height: 1.2">{{sel.pe}}</span>
+              </div>
+            </div>
+            <div style="min-width: 0; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 20px; background: #EAE6FB">
+              <span aria-hidden="true" style="flex-shrink: 0; width: 56px; height: 56px; border-radius: 999px; background: #1A1726; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; box-shadow: 0 0 0 3px #FFFFFF">{{sel.wIn}}</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; min-height: 60px">
+                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: #4128B8">MUNDO</span>
+                <span style="font-size: 18px; font-weight: 700; line-height: 1.2">{{sel.world}}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <p style="margin: 0; font-size: 12px; color: #6B6680">Nivel basado en Campbell y Farrell (2020). Estilo adaptado de Gross y von Wangenheim (2018). Nicho según IAB Content Taxonomy 3.0.</p>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</template>
 <script>
-(function(){
-  var logged = false, timer = null;
-  var views = ['inicio','entrar','analizando','reporte','perfil','planes'];
-  function show(){
-    var v = (location.hash || '').replace('#','');
-    if (views.indexOf(v) < 0) v = 'inicio';
-    if (v === 'analizando' && !logged) { location.hash = 'entrar'; return; }
-    document.querySelectorAll('[data-view]').forEach(function(s){ s.classList.toggle('on', s.getAttribute('data-view') === v); });
-    window.scrollTo(0,0);
-    if (v === 'analizando') runAnalysis(); else if (timer) { clearInterval(timer); timer = null; }
+
+(function () {
+  'use strict';
+  var EVENTS = { onclick: 'click', onchange: 'change', onkeydown: 'keydown', onmouseenter: 'mouseenter', onmouseleave: 'mouseleave', oninput: 'input' };
+  var HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  var WHOLE = /^\{\{\s*([^}]+?)\s*\}\}$/;
+
+  function lookup(path, scope) {
+    if (path === 'true') return true;
+    if (path === 'false') return false;
+    if (path === 'null') return null;
+    if (/^-?\d+(\.\d+)?$/.test(path)) return Number(path);
+    var parts = path.split('.');
+    var cur;
+    for (var i = scope.length - 1; i >= 0; i--) {
+      if (scope[i] && Object.prototype.hasOwnProperty.call(scope[i], parts[0])) { cur = scope[i][parts[0]]; break; }
+    }
+    for (var j = 1; j < parts.length; j++) { if (cur == null) return undefined; cur = cur[parts[j]]; }
+    return cur;
   }
-  window.addEventListener('hashchange', show);
-
-  // Inicio
-  document.querySelectorAll('[data-plat]').forEach(function(b){ b.addEventListener('click', function(){
-    document.querySelectorAll('[data-plat]').forEach(function(x){ x.classList.remove('on'); x.setAttribute('aria-checked','false'); });
-    b.classList.add('on'); b.setAttribute('aria-checked','true'); }); });
-  var sel = { v:'5', d:'30', t:'detectar tipo' };
-  document.querySelectorAll('.pills').forEach(function(g){ g.addEventListener('click', function(e){
-    var b = e.target.closest('button'); if (!b) return;
-    g.querySelectorAll('button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-    sel[g.getAttribute('data-group')] = b.getAttribute('data-val');
-    document.getElementById('optSummary').textContent = sel.v + ' videos · ' + sel.d + ' días · ' + sel.t; }); });
-  var optT = document.getElementById('optToggle');
-  optT.addEventListener('click', function(){ var o = document.getElementById('opts'); var on = !o.classList.contains('on'); o.classList.toggle('on', on); optT.textContent = on ? 'Cerrar' : 'Opciones'; optT.setAttribute('aria-expanded', on); });
-  document.getElementById('searchForm').addEventListener('submit', function(e){ e.preventDefault(); location.hash = logged ? 'analizando' : 'entrar'; });
-  document.getElementById('googleBtn').addEventListener('click', function(){ logged = true; document.getElementById('navEntrar').textContent = 'Mi cuenta'; location.hash = 'analizando'; });
-
-  // Analizando
-  var feedAll = [['busco a cinamarron, doy a Kitty o al sapo','91','Otro'],['Sería interesante que compartas el proceso de tu titulación','73','Pide video'],['¿Expones tu artículo aprobado y te dan el título?','66','Pregunta'],['estoy entre la upc y la ulima, ¿cuál me recomiendas?','12','Pregunta']];
-  function esc(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-  function render(t){
-    var read = [0,60,140,231,231,231,231][Math.min(t,6)];
-    var phase = t < 1 ? 0 : t < 4 ? 1 : t < 6 ? 2 : 3;
-    var steps = [['Videos','5'],['Comentarios', read + ' de 515'],['Reporte','Preparando tus ideas']];
-    document.getElementById('steps').innerHTML = steps.map(function(s,i){
-      var st = phase > i ? 'done' : phase === i ? 'now' : 'next';
-      return '<li class="step ' + st + '"><span><span class="dot">' + (st === 'done' ? '✓' : '') + '</span>' + s[0] + '</span><span style="font-size:14px;color:' + (st === 'now' ? 'var(--v)' : 'var(--mut)') + '">' + (st === 'next' ? '' : s[1]) + '</span></li>';
-    }).join('');
-    var shown = Math.min(4, t), labeled = Math.max(0, t - 1);
-    document.getElementById('feed').innerHTML = feedAll.slice(0, shown).map(function(c,i){
-      var ok = i < labeled;
-      return '<li class="fc ' + (ok ? 'ok' : 'wait') + '"><div style="min-width:0"><p style="margin:0;font-size:15px;line-height:1.4">' + esc(c[0]) + '</p><p style="margin:4px 0 0;font-size:13px" class="mut">' + c[1] + ' votos</p></div><span class="tag">' + (ok ? c[2] : 'leyendo') + '</span></li>';
-    }).join('');
-    var done = phase === 3;
-    document.getElementById('anTitle').textContent = done ? 'Listo, @quieromak1s' : 'Leyendo a @quieromak1s…';
-    document.getElementById('anSub').textContent = done ? 'Tu reporte te espera.' : 'Unos minutos.';
-    document.getElementById('goReport').style.display = done ? 'inline-flex' : 'none';
+  function interp(str, scope) {
+    return str.replace(HOLE, function (_, p) { var v = lookup(p, scope); return v == null ? '' : String(v); });
   }
-  function runAnalysis(){ var t = 0; render(0); if (timer) clearInterval(timer); timer = setInterval(function(){ t++; render(t); if (t >= 6) { clearInterval(timer); timer = null; } }, 1100); }
 
-  // Reporte
-  document.querySelectorAll('.task').forEach(function(b){ b.addEventListener('click', function(){ var d = !b.classList.contains('d'); b.classList.toggle('d', d); b.setAttribute('aria-pressed', d); b.querySelector('.box').textContent = d ? '✓' : ''; }); });
-  document.getElementById('days').innerHTML = [['lun',.41],['mar',.28],['mié',1.18],['jue',3.57],['vie',1.03],['sáb',1.16],['dom',.76]].map(function(x){
-    return '<div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px"><div style="width:100%;height:' + Math.max(6, Math.round(x[1]/3.57*100)) + '%;border-radius:6px 6px 3px 3px;background:' + (x[0] === 'jue' ? 'var(--v)' : 'var(--soft)') + '"></div><span style="font-size:11px" class="mut">' + x[0] + '</span></div>'; }).join('');
-  var perf = [185.75,121.48,108.32,30.61,13.44,5.97,5.89,5.24,4.58,1.69,1.35,1.18,1.17,1.16,1.03,.97,.92,.8,.72,.63,.63,.5,.41,.32,.32,.28,.28,.26,.22,.19], top = Math.sqrt(185.75);
-  document.getElementById('channel').innerHTML = perf.map(function(x){ return '<div class="' + (x >= 1.5 ? 'hi' : '') + '" style="height:' + Math.max(4, Math.round(Math.sqrt(x)/top*100)) + '%"></div>'; }).join('');
-  document.getElementById('shareBtn').addEventListener('click', function(){ var b = this; try { navigator.clipboard.writeText(location.href.split('#')[0] + '#reporte').then(function(){ b.textContent = 'Link copiado'; }, function(){ b.textContent = 'Copia el link de arriba'; }); } catch(e){ b.textContent = 'Copia el link de arriba'; } });
-  document.querySelectorAll('[data-fb]').forEach(function(b){ b.addEventListener('click', function(){ document.getElementById('fb').innerHTML = '<span>Gracias.</span>'; }); });
-
-  // Perfil
-  var niches = [
-    ['Lifestyle','Daniela Taquire','Emma Chamberlain','M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z'],
-    ['Foodie','Ignacio Baladán','Keith Lee','M7 3v8a2 2 0 0 0 2 2v8M7 3v4M11 3v8a2 2 0 0 1-2 2M17 21V3c-2 1.5-3 4-3 7h3'],
-    ['Humor','Rubén Tuesta','Khaby Lame','M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01'],
-    ['Gamer','zMauroXD','Ibai Llanos','M6 11h4M8 9v4M15 12h.01M18 10h.01M17.3 5H6.7a4 4 0 0 0-4 3.6L2 15a3 3 0 0 0 5.4 2L9 15h6l1.6 2a3 3 0 0 0 5.4-2l-.7-6.4a4 4 0 0 0-4-3.6z'],
-    ['Belleza','Diego Rodríguez Doig','Mikayla Nogueira','M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z']];
-  function ini(n){ return n.split(' ').map(function(w){ return w[0]; }).join('').slice(0,2).toUpperCase(); }
-  function pick(i){
-    document.querySelectorAll('#tiles button').forEach(function(b,j){ b.classList.toggle('on', i === j); b.setAttribute('aria-pressed', i === j); });
-    var n = niches[i]; document.getElementById('peName').textContent = n[1]; document.getElementById('wName').textContent = n[2];
-    document.getElementById('peIn').textContent = ini(n[1]); document.getElementById('wIn').textContent = ini(n[2]);
+  function build(node, scope, out) {
+    if (node.nodeType === 3) { out.appendChild(document.createTextNode(interp(node.nodeValue, scope))); return; }
+    if (node.nodeType !== 1) return;
+    var tag = node.localName;
+    if (tag === 'sc-if') {
+      var m = WHOLE.exec(node.getAttribute('value') || '');
+      if (m && lookup(m[1], scope)) children(node, scope, out);
+      return;
+    }
+    if (tag === 'sc-for') {
+      var lm = WHOLE.exec(node.getAttribute('list') || '');
+      var list = lm ? lookup(lm[1], scope) : null;
+      var as = node.getAttribute('as') || 'item';
+      (list || []).forEach(function (item, idx) {
+        var frame = { $index: idx }; frame[as] = item;
+        children(node, scope.concat([frame]), out);
+      });
+      return;
+    }
+    var el = node.namespaceURI && node.namespaceURI !== 'http://www.w3.org/1999/xhtml'
+      ? document.createElementNS(node.namespaceURI, tag) : document.createElement(tag);
+    var deferredValue;
+    for (var a = 0; a < node.attributes.length; a++) {
+      var at = node.attributes[a], name = at.name, val = at.value;
+      if (name.indexOf('hint-') === 0) continue;
+      var whole = WHOLE.exec(val);
+      if (EVENTS[name]) {
+        var fn = whole ? lookup(whole[1], scope) : null;
+        if (typeof fn === 'function') {
+          var type = EVENTS[name];
+          if (name === 'onchange' && tag === 'input') type = 'input';
+          el.addEventListener(type, (function (f) { return function (e) { f(e); }; })(fn));
+        }
+        continue;
+      }
+      if (name === 'value' && (tag === 'input' || tag === 'select' || tag === 'textarea')) {
+        deferredValue = whole ? lookup(whole[1], scope) : interp(val, scope);
+        continue;
+      }
+      if (whole) {
+        var raw = lookup(whole[1], scope);
+        if (raw == null || raw === false) { if (name === 'disabled') continue; if (raw == null) continue; }
+        if (name === 'disabled') { if (raw) el.setAttribute('disabled', ''); continue; }
+        el.setAttribute(name, String(raw));
+      } else {
+        el.setAttribute(name, interp(val, scope));
+      }
+    }
+    children(node, scope, el);
+    if (deferredValue !== undefined) el.value = deferredValue == null ? '' : deferredValue;
+    out.appendChild(el);
   }
-  document.getElementById('tiles').innerHTML = niches.map(function(n,i){ return '<button type="button" aria-pressed="false" data-i="' + i + '"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + n[3] + '"/></svg><span style="display:block;margin-top:8px;font-size:15px;font-weight:700">' + n[0] + '</span>' + (i === 0 ? '<span class="chip" style="margin-top:6px;font-size:11px;padding:2px 8px">tú</span>' : '') + '</button>'; }).join('');
-  document.getElementById('tiles').addEventListener('click', function(e){ var b = e.target.closest('button'); if (b) pick(+b.getAttribute('data-i')); });
-  pick(0);
-  var check = 'M5 12l5 5L20 7', lock = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z', star = 'M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z';
-  document.getElementById('badges').innerHTML = [['Nano','<10k','done',44],['Micro','10k–100k','now',64],['Macro','100k–1M','lock',52],['Mega','+1M','lock',60]].map(function(t){
-    var st = t[2], s = t[3];
-    var bg = st === 'now' ? 'background:var(--v);box-shadow:0 0 0 6px var(--lila)' : st === 'done' ? 'background:var(--lila)' : 'background:var(--bg);border:2px dashed var(--line2)';
-    var ink = st === 'now' ? '#fff' : st === 'done' ? '#5B3FE0' : '#9A94B4';
-    return '<div><span class="badge" style="width:' + s + 'px;height:' + s + 'px;' + bg + '"><svg width="' + Math.round(s*.42) + '" height="' + Math.round(s*.42) + '" viewBox="0 0 24 24" fill="none" stroke="' + ink + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + (st === 'done' ? check : st === 'now' ? star : lock) + '"/></svg></span><b style="font-size:15px;color:' + (st === 'now' ? 'var(--v)' : st === 'lock' ? '#8A84A0' : 'var(--ink)') + '">' + t[0] + '</b><span>' + t[1] + '</span></div>'; }).join('');
+  function children(node, scope, out) {
+    var kids = node.content ? node.content.childNodes : node.childNodes;
+    for (var i = 0; i < kids.length; i++) build(kids[i], scope, out);
+  }
 
-  // Planes
-  document.querySelectorAll('[data-plan]').forEach(function(b){ b.addEventListener('click', function(){ b.textContent = 'Anotado'; b.classList.add('d'); }); });
+  function DCLogic(props) { this.props = props || {}; this.state = {}; }
+  DCLogic.prototype.setState = function (partial, cb) {
+    var next = typeof partial === 'function' ? partial(this.state, this.props) : partial;
+    var changed = false;
+    for (var k in next) if (this.state[k] !== next[k]) { changed = true; break; }
+    if (changed) { this.state = Object.assign({}, this.state, next); this.__render(); }
+    if (cb) cb();
+  };
+  DCLogic.prototype.forceUpdate = function () { this.__render(); };
+  window.DCLogic = DCLogic;
 
-  show();
+  window.__mountDC = function (Component, root, tpl) {
+    var inst = new Component({});
+    if (!inst.state) inst.state = {};
+    inst.__render = function () {
+      var active = document.activeElement, id = active && active.id, s0, s1;
+      try { s0 = active.selectionStart; s1 = active.selectionEnd; } catch (e) {}
+      var frag = document.createDocumentFragment();
+      var vals = inst.renderVals();
+      var kids = tpl.content.childNodes;
+      for (var i = 0; i < kids.length; i++) build(kids[i], [vals], frag);
+      root.replaceChildren(frag);
+      if (id) {
+        var again = document.getElementById(id);
+        if (again) { again.focus(); try { if (s0 != null) again.setSelectionRange(s0, s1); } catch (e) {} }
+      }
+      if (inst.componentDidUpdate && inst.__mounted) inst.componentDidUpdate(inst.props, inst.state);
+    };
+    inst.__render();
+    inst.__mounted = true;
+    if (inst.componentDidMount) inst.componentDidMount();
+  };
 })();
+
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    const start = (p && p.pantalla) || 'inicio';
+    const vista = ['contenido', 'comunidad'].indexOf(p && p.vista) >= 0 ? p.vista : 'contenido';
+    this.state = {
+      screen: start, next: 'analizando', logged: ['analizando', 'reporte', 'perfil'].indexOf(start) >= 0,
+      v: 3, d: 7,
+      goal: vista, query: '', step: 0,
+      done: {}, how: false, vote: null, niche: 'life', picked: null,
+      share: false, copied: false,
+    };
+  }
+  componentDidMount() { if (this.state.screen === 'analizando') this.startAnalysis(); }
+  componentDidUpdate(prev) {
+    if (this.props.pantalla && prev.pantalla !== this.props.pantalla) this.go(this.props.pantalla);
+  }
+  componentWillUnmount() { this.stop(); }
+  stop() { clearInterval(this.iv); clearTimeout(this.to); }
+  startAnalysis() {
+    this.stop();
+    this.setState({ step: 0 });
+    this.iv = setInterval(() => {
+      const n = Math.min(6, this.state.step + 1);
+      this.setState({ step: n });
+      if (n >= 6) {
+        clearInterval(this.iv);
+        this.to = setTimeout(() => { if (this.state.screen === 'analizando') this.go('reporte'); }, 1500);
+      }
+    }, 1100);
+  }
+  go(screen, extra) {
+    this.stop();
+    this.setState(Object.assign({ screen }, extra || {}), () => {
+      try { window.scrollTo(0, 0); } catch (e) {}
+    });
+    if (screen === 'analizando') this.startAnalysis();
+  }
+  renderVals() {
+    const s = this.state;
+
+    const goalList = [['contenido', 'Contenido'], ['comunidad', 'Comunidad']];
+    const goalLabel = (goalList.find(([id]) => id === s.goal) || goalList[0])[1];
+
+    const analyze = (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      if (s.logged) this.go('analizando'); else this.go('entrar', { next: 'analizando' });
+    };
+
+    // Analizando
+    const t = s.step;
+    const read = [0, 60, 140, 231, 231, 231, 231][t];
+    const phase = t < 1 ? 0 : t < 4 ? 1 : t < 6 ? 2 : 3;
+    const step = (i, label, meta) => {
+      const st = phase > i ? 'done' : phase === i ? 'now' : 'next';
+      return {
+        label, meta: st === 'next' ? '' : meta,
+        mark: st === 'done' ? '✓' : '',
+        row: 'display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-radius: 14px; font-size: 16px; ' +
+          (st === 'now' ? 'background: #FFFFFF; border: 1.5px solid #5B3FE0; font-weight: 500' : st === 'done' ? 'background: #FFFFFF; border: 1.5px solid transparent' : 'border: 1.5px dashed #D8D3EC; color: #8A84A0'),
+        dot: 'display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 999px; box-sizing: border-box; font-size: 12px; color: #FFFFFF; ' +
+          (st === 'done' ? 'background: #5B3FE0' : st === 'now' ? 'border: 2.5px solid #DCD8EA; border-top-color: #5B3FE0' : 'border: 2px solid #DCD8EA'),
+        metaStyle: 'font-size: 14px; text-align: right; ' + (st === 'now' ? 'color: #5B3FE0' : 'color: #6B6680'),
+      };
+    };
+    const an = {
+      done: phase === 3,
+      title: phase === 3 ? 'Listo, @quieromak1s' : 'Leyendo a @quieromak1s…',
+      subtitle: phase === 3 ? 'Abriendo tu reporte…' : 'Unos minutos.',
+      steps: [step(0, 'Vídeos', '5'), step(1, 'Comentarios', String(read)), step(2, 'Reporte', 'Preparando tus ideas')],
+    };
+
+    // Reporte
+    const MOVES = {
+      contenido: [
+        { id: 'g', verb: 'TUTORIAL', text: 'Disfraz barato, paso a paso', why: '207 likes lo piden' },
+        { id: 'acido', verb: 'RESEÑA', text: 'El ácido que les recomendó su dermatólogo', why: '196 likes lo piden' },
+        { id: 'tit', verb: 'HISTORIA', text: 'Cómo te titulaste con un artículo', why: '139 likes entre pedidos y preguntas' },
+      ],
+      comunidad: [
+        { id: 'ac', verb: 'SÚMATE', text: 'Al trueque de tu vídeo de Burger King', why: 'Ya intercambian juguetes ahí; el comentario más popular tiene 91 likes' },
+        { id: 'r', verb: 'CONTESTA', text: 'Alguien duda: ¿ULima o UPC?', why: 'Te pidió una recomendación; 12 likes' },
+      ],
+    };
+    const dn = s.done;
+    const moves = (MOVES[s.goal] || MOVES.contenido).map((m, i) => ({
+      ...m, n: String(i + 1), doneStr: dn[m.id] ? 'true' : 'false', check: dn[m.id] ? '✓' : '',
+      toggle: () => this.setState({ done: { ...dn, [m.id]: !dn[m.id] } }),
+      style: 'display: flex; align-items: center; gap: 16px; width: 100%; text-align: left; padding: 14px 18px; border-radius: 18px; border: 0; font: inherit; cursor: pointer; color: #1A1726; background: #FFFFFF; box-sizing: border-box; ' +
+        (dn[m.id] ? 'opacity: 0.55; text-decoration: line-through' : ''),
+      box: 'flex-shrink: 0; width: 22px; height: 22px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; color: #FFFFFF; box-sizing: border-box; ' +
+        (dn[m.id] ? 'background: #5B3FE0' : 'border: 1.5px solid #B8B1D6'),
+    }));
+    const focus = goalList.map(([id, label]) => {
+      const on = s.goal === id;
+      return {
+        label, on: on ? 'true' : 'false',
+        pick: () => this.setState({ goal: id, how: false }),
+        style: 'height: 44px; padding: 0 22px; border-radius: 999px; font: inherit; font-size: 15px; cursor: pointer; ' +
+          (on ? 'background: #5B3FE0; color: #FFFFFF; border: 1px solid #5B3FE0; font-weight: 500' : 'background: #FFFFFF; color: #4F4A63; border: 1px solid #E3E1EC'),
+      };
+    });
+    const scope = 'Leímos 231 comentarios de tus ' + s.v + ' vídeos más vistos ' + ({ 7: 'de la última semana', 30: 'del último mes', 90: 'de los últimos 3 meses' }[s.d] || 'de la última semana');
+    const howText = s.goal === 'comunidad'
+      ? scope + ' y buscamos las conversaciones y dudas que siguen abiertas. Los likes deciden cuál va primero.'
+      : scope + ' y juntamos los que te piden un vídeo. Los likes de cada comentario deciden qué va primero.';
+    const hbar = (pct) => 'width: ' + pct + '%; height: 100%; border-radius: 999px; background: #5B3FE0';
+    const themes = [['Disfraces y manualidades', 45], ['Universidad', 14], ['Día a día', 5]]
+      .map(([label, k], i) => ({ label, value: Math.round(k / 64 * 100) + '%', tip: 'Promedio de ' + k + 'k vistas por vídeo', bar: hbar(Math.round(k / 45 * 100)), show: s.hover === 'th' + i, enter: () => this.setState({ hover: 'th' + i }) }));
+    const topics = [['Te piden vídeos', 38, 88], ['Te preguntan', 27, 62], ['Conversan entre ellos', 20, 46], ['Te dan su opinión', 15, 35]]
+      .map(([label, pct, n], i) => ({ label, value: pct + '%', tip: n + ' de 231 comentarios', bar: hbar(Math.round(pct / 38 * 100)), show: s.hover === 'tp' + i, enter: () => this.setState({ hover: 'tp' + i }) }));
+    const fmtK = (k) => String(k).replace('.', ',') + 'k';
+    const days = [['lun', 2.9], ['mar', 2], ['mié', 8.3], ['jue', 20], ['vie', 7.2], ['sáb', 8.1], ['dom', 5.3]].map(([n, k], i) => ({
+      n, bar: 'width: 100%; height: ' + Math.max(6, Math.round(k / 20 * 100)) + '%; border-radius: 4px 4px 2px 2px; background: ' + (n === 'jue' ? '#5B3FE0' : '#DCD8EA'),
+      tip: fmtK(k) + ' vistas promedio', show: s.hover === 'dy' + i, enter: () => this.setState({ hover: 'dy' + i }),
+    }));
+    const actionsTitle = s.goal === 'comunidad' ? 'Conecta con tu audiencia' : 'Vídeos para grabar';
+    const fans = [['@ana.diy', 12, true], ['@luchito.pe', 9, true], ['@mafer_u', 7, false]]
+      .map(([user, n, f]) => ({ user, ini: user.replace(/[^a-z]/gi, '').slice(0, 2).toUpperCase(), count: n + ' comentarios', follows: f ? 'Te sigue' : '' }));
+    const trendK = [11, 14, 9, 13, 12, 8.4, 7.6, 7.5, 7, 6.1];
+    const trend = trendK.map((k, i) => ({
+      bar: 'width: 100%; height: ' + Math.round(k / 14 * 100) + '%; border-radius: 4px 4px 2px 2px; background: ' + (i >= 5 ? '#5B3FE0' : '#DCD8EA'),
+      tip: fmtK(k) + ' vistas', show: s.hover === 'tr' + i, enter: () => this.setState({ hover: 'tr' + i }),
+    }));
+    const shareLink = '[DOMINIO]/r/quieromak1s';
+    const votes = [['si', 'Sí'], ['algo', 'Más o menos'], ['no', 'No']].map(([id, label]) => ({ label, pick: () => this.setState({ vote: id }) }));
+
+    // Perfil
+    const ini = (n) => n.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+    const nicheList = [
+      { id: 'life', name: 'Lifestyle', pe: 'Daniela Taquire', world: 'Emma Chamberlain', icon: 'M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z' },
+      { id: 'food', name: 'Foodie', pe: 'Ignacio Baladán', world: 'Keith Lee', icon: 'M7 3v8a2 2 0 0 0 2 2v8M7 3v4M11 3v8a2 2 0 0 1-2 2M17 21V3c-2 1.5-3 4-3 7h3' },
+      { id: 'humor', name: 'Humor', pe: 'Rubén Tuesta', world: 'Khaby Lame', icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01' },
+      { id: 'game', name: 'Gamer', pe: 'zMauroXD', world: 'Ibai Llanos', icon: 'M6 11h4M8 9v4M15 12h.01M18 10h.01M17.3 5H6.7a4 4 0 0 0-4 3.6L2 15a3 3 0 0 0 5.4 2L9 15h6l1.6 2a3 3 0 0 0 5.4-2l-.7-6.4a4 4 0 0 0-4-3.6z' },
+      { id: 'beauty', name: 'Belleza', pe: 'Diego Rodríguez Doig', world: 'Mikayla Nogueira', icon: 'M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z' },
+    ];
+    const cur = nicheList.find((n) => n.id === s.niche) || nicheList[0];
+    const others = nicheList.slice(1).map((n) => {
+      const on = n.id === s.niche;
+      return {
+        ...n, onStr: on ? 'true' : 'false',
+        pick: () => this.setState({ niche: n.id }),
+        chip: 'display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer; ' +
+          (on ? 'background: #5B3FE0; color: #FFFFFF; border: 1px solid #5B3FE0; font-weight: 500' : 'background: #FFFFFF; color: #4F4A63; border: 1px solid #E3E1EC'),
+      };
+    });
+    const comparing = s.niche !== 'life';
+    const nicheLabel = comparing ? 'COMPARANDO CON' : 'TU NICHO';
+    const backLine = 'margin: 4px 0 0; font-size: 13px; color: #4F4A63; ' + (comparing ? '' : 'visibility: hidden');
+    const check = 'M5 12l5 5L20 7';
+    const lock = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z';
+    const star = 'M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z';
+    const tiers = [
+      ['Nano', '<10k', 'done', 44], ['Micro', '10k–100k', 'now', 64], ['Macro', '100k–1M', 'lock', 52], ['Mega', '+1M', 'lock', 60],
+    ].map(([name, range, st, size]) => ({
+      name, range,
+      path: st === 'done' ? check : st === 'now' ? star : lock,
+      icon: String(Math.round(size * 0.42)),
+      ink: st === 'now' ? '#FFFFFF' : st === 'done' ? '#5B3FE0' : '#9A94B4',
+      badge: 'width: ' + size + 'px; height: ' + size + 'px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; ' +
+        (st === 'now' ? 'background: #5B3FE0; box-shadow: 0 0 0 6px #EAE6FB' : st === 'done' ? 'background: #EAE6FB' : 'background: #F5F4FA; border: 2px dashed #D8D3EC; box-sizing: border-box'),
+      label: 'font-size: 15px; font-weight: 700; ' + (st === 'now' ? 'color: #5B3FE0' : st === 'lock' ? 'color: #8A84A0' : 'color: #1A1726'),
+    }));
+
+    return {
+      is: {
+        inicio: s.screen === 'inicio', entrar: s.screen === 'entrar', analizando: s.screen === 'analizando',
+        reporte: s.screen === 'reporte', perfil: s.screen === 'perfil',
+      },
+      loggedIn: s.logged, loggedOut: !s.logged,
+      toInicio: () => this.go('inicio'),
+      toPerfil: () => this.go('perfil'),
+      toReporte: () => this.go('reporte'),
+      leave: () => this.setState({ hover: null }),
+      tonoA: () => this.setState({ hover: 'tA' }), tonoN: () => this.setState({ hover: 'tN' }),
+      tonoTipShow: s.hover === 'tA' || s.hover === 'tN',
+      tonoTip: s.hover === 'tN' ? '9 comentarios neutrales' : '222 comentarios a favor',
+      moves, focus, howText, actionsTitle, themes, topics, fans, trend, days,
+      isContenido: s.goal !== 'comunidad', isComunidad: s.goal === 'comunidad',
+      share: s.share, shareStr: s.share ? 'true' : 'false',
+      shareBtn: 'height: 44px; padding: 0 18px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer; ' +
+        (s.share ? 'border: 1px solid #5B3FE0; background: #EAE6FB; color: #4128B8' : 'border: 1px solid #D8D3EC; background: #FFFFFF; color: #1A1726'),
+      toggleShare: () => this.setState({ share: !s.share, copied: false }),
+      shareLink,
+      copyLabel: s.copied ? 'Copiado ✓' : 'Copiar link',
+      copyLink: () => {
+        try { if (navigator.clipboard) navigator.clipboard.writeText(shareLink).catch(() => {}); } catch (e) {}
+        this.setState({ copied: true });
+      },
+      toLogin: () => this.go('entrar', { next: s.screen === 'entrar' ? s.next : s.screen }),
+      login: () => this.go(s.next || 'analizando', { logged: true }),
+      analyze,
+      onKey: (e) => { if (e && e.key === 'Enter') analyze(e); },
+      query: s.query,
+      setQuery: (e) => this.setState({ query: e && e.target ? e.target.value : '' }),
+      topQuery: s.topQuery || '',
+      setTopQuery: (e) => this.setState({ topQuery: e && e.target ? e.target.value : '' }),
+      goal: s.goal, goalLabel,
+      setGoal: (e) => this.setState({ goal: e.target.value }),
+      vStr: String(s.v), setV: (e) => this.setState({ v: Number(e.target.value) }),
+      dStr: String(s.d), setD: (e) => this.setState({ d: Number(e.target.value) }),
+      an,
+      how: s.how, howStr: s.how ? 'true' : 'false', howMark: s.how ? '▴' : '▾',
+      toggleHow: () => this.setState({ how: !s.how }),
+      votes, voted: !!s.vote, notVoted: !s.vote,
+      others, comparing, nicheLabel, backLine, backHidden: comparing ? 'false' : 'true', backTab: comparing ? 0 : -1, backToOwn: () => this.setState({ niche: 'life' }),
+      sel: { ...cur, peIn: ini(cur.pe), wIn: ini(cur.world) }, tiers,
+    };
+  }
+}
+window.__mountDC(Component, document.getElementById('app'), document.getElementById('tpl'));
 </script>
 </body>
 </html>
